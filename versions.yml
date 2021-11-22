@@ -1,0 +1,100 @@
+---
+# https://docs.ansible.com/ansible/devel/reference_appendices/release_and_maintenance.html#ansible-core-changelogs
+ansible-core-version:
+- stable-2.9       # EOL May 2022
+- stable-2.10      # EOL May 2022
+- stable-2.11      # EOL May 2022
+- stable-2.12      # EOL May 2023
+- devel
+
+python-version:
+- 3.8
+
+# devel: https://github.com/ansible/ansible/blob/devel/test/lib/ansible_test/_data/completion/docker.txt
+docker-image:
+- alpine3                        # python 3.9
+- centos6                        # python 2.6
+- centos7                        # python 2.7
+- centos8                        # python 3.6
+- fedora34                       # python 3.9
+- opensuse15py2                  # python 2.7
+- opensuse15                     # python 3.6
+- ubuntu1804                     # python 3.6
+- ubuntu2004                     # python 3.8
+
+docker-include:
+- ansible-core-version: stable-2.9
+  docker-image: fedora30         # python 3.7
+  python-version: 3.8
+- ansible-core-version: stable-2.9
+  docker-image: fedora31         # python 3.7
+  python-version: 3.8
+- ansible-core-version: stable-2.9
+  docker-image: ubuntu1604       # python 2.7
+  python-version: 3.8
+- ansible-core-version: stable-2.10
+  docker-image: fedora30         # python 3.7
+  python-version: 3.8
+- ansible-core-version: stable-2.10
+  docker-image: fedora31         # python 3.7
+  python-version: 3.8
+- ansible-core-version: stable-2.10
+  docker-image: fedora32         # python 3.8
+  python-version: 3.8
+- ansible-core-version: stable-2.10
+  docker-image: ubuntu1604       # python 2.7
+  python-version: 3.8
+- ansible-core-version: stable-2.11
+  docker-image: fedora32         # python 3.8
+  python-version: 3.8
+- ansible-core-version: stable-2.11
+  docker-image: fedora33         # python 3.9
+  python-version: 3.8
+- ansible-core-version: stable-2.12
+  docker-image: centos6          # python 2.6
+  python-version: 3.8
+- ansible-core-version: stable-2.12
+  docker-image: fedora33         # python 3.9
+  python-version: 3.8
+- ansible-core-version: devel
+  docker-image: fedora35         # python 3.10
+  python-version: 3.8
+
+docker-exclude:
+- ansible-core-version: stable-2.9
+  docker-image: alpine3
+- ansible-core-version: stable-2.9
+  docker-image: fedora34
+- ansible-core-version: stable-2.9
+  docker-image: ubuntu2004
+- ansible-core-version: stable-2.10
+  docker-image: alpine3
+- ansible-core-version: stable-2.10
+  docker-image: fedora34
+- ansible-core-version: stable-2.11
+  docker-image: fedora34
+- ansible-core-version: devel
+  docker-image: centos6
+- ansible-core-version: devel
+  docker-image: centos8
+
+target-python-version:
+- 3.9
+- 3.8
+- 3.7
+- 3.6
+- 3.5
+- 2.7
+- 2.6
+
+target-python-exclude:
+- ansible-core-version: stable-2.9
+  target-python-version: 3.9
+- ansible-core-version: stable-2.9
+  target-python-version: 3.10
+- ansible-core-version: stable-2.10
+  target-python-version: 3.10
+- ansible-core-version: stable-2.11
+  target-python-version: 3.10
+- ansible-core-version: devel
+  target-python-version: 2.6

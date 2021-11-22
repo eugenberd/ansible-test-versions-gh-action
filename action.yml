@@ -1,0 +1,72 @@
+---
+name: ansible-test-versions
+author: Cédric Villemain <https://Data-Bene.io>
+branding:
+  icon: check-circle
+  color: gray-dark
+description: >-
+  GitHub Action for setting up job matrix based on expected ansible, python and
+  docker image support for Ansible Collections.
+
+inputs:
+  ansible-core-version:
+    description: Array of ansible versions
+    required: false
+  docker-exclude:
+    description: Array of matrix excludes for docker
+    required: false
+  docker-image:
+    description: Array of docker images
+    required: false
+  docker-include:
+    description: Array of matrix includes for docker
+    required: false
+  python-version:
+    description: Array of python versions (controler)
+    required: false
+  target-python-exclude:
+    description: Array of excludes target python versions
+    required: false
+  target-python-version:
+    description: Array of target python versions (managed)
+    required: false
+
+outputs:
+  ansible-core-version:
+    description: Array of ansible versions
+    value: ${{ inputs.ansible-core-version || steps.get.outputs.ansible-core-version }}
+  docker-exclude:
+    description: Array of matrix excludes for docker
+    value: ${{ inputs.docker-exclude || steps.get.outputs.docker-exclude }}
+  docker-image:
+    description: Array of docker images
+    value: ${{ inputs.docker-image || steps.get.outputs.docker-image }}
+  docker-include:
+    description: Array of matrix includes for docker
+    value: ${{ inputs.docker-include || steps.get.outputs.docker-include }}
+  python-version:
+    description: Array of python versions (controler)
+    value: ${{ inputs.python-version || steps.get.outputs.python-version }}
+  target-python-exclude:
+    description: Array of excludes target python versions
+    value: ${{ inputs.target-python-exclude || steps.get.outputs.target-python-exclude }}
+  target-python-version:
+    description: Array of target python versions (managed)
+    value: ${{ inputs.target-python-version || steps.get.outputs.target-python-version }}
+
+runs:
+  using: "composite"
+  steps:
+    - run: >
+        echo -e "
+        \tansible-test-versions-gh-action \n
+        \tCopyright (C) 2021 Cédric Villemain ( https://Data-Bene.io) \n
+        \tThis program comes with ABSOLUTELY NO WARRANTY. \n
+        \tThis is free software, and you are welcome to redistribute it \n
+        \tunder certain conditions. \n"
+      shell: bash
+
+    - run: ${{ github.action_path }}/get_versions.sh ${{ github.action_path }}/versions.yml
+      id: get
+      shell: bash
+...
