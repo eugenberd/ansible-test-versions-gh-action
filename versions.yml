@@ -7,8 +7,8 @@ ansible-core-version:
 - stable-2.12      # EOL May 2023
 - devel
 
+# Upstream action takes care of providing sane default.
 python-version:
-- 3.8
 
 # devel: https://github.com/ansible/ansible/blob/devel/test/lib/ansible_test/_data/completion/docker.txt
 docker-image:

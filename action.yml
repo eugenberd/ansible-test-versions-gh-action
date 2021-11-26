@@ -7,66 +7,104 @@ branding:
 description: >-
   GitHub Action for setting up job matrix based on expected ansible, python and
   docker image support for Ansible Collections.
+  Inputs parameters are used to replace the defaults.
+  Default are in the versions.yml file in this repository.
 
 inputs:
   ansible-core-version:
-    description: Array of ansible versions
+    description: >-
+      JSON array of ansible versions.
+      Default to all stable versions and devel
+      Example:
+      ansible-core-version: '[ "stable-2.12", "devel" ]'
     required: false
   docker-exclude:
-    description: Array of matrix excludes for docker
+    description: >-
+      JSON array of exclusion for docker
+      Default to known not to work combination like ansible 2.9 and alpine3.
     required: false
   docker-image:
-    description: Array of docker images
+    description: >-
+      JSON array of docker images
+      Default to all images supported by ansible-test
     required: false
   docker-include:
-    description: Array of matrix includes for docker
+    description: >-
+      JSON array of inclusions for docker
+      Default to known combination of interest
     required: false
   python-version:
-    description: Array of python versions (controler)
+    description: >-
+      JSON array of python versions for the controler
+      Upstream action ansible-community/ansible-test-gh-action already provides
+      sane default, so it's empty here by default.
     required: false
   target-python-exclude:
-    description: Array of excludes target python versions
+    description: >-
+      JSON array of exclusion for target python versions (managed)
+      Default to known incompatible cases.
     required: false
   target-python-version:
-    description: Array of target python versions (managed)
+    description: >-
+      JSON array of target python versions (managed)
+      Default to all versions collections are supposed to support.
     required: false
 
 outputs:
   ansible-core-version:
-    description: Array of ansible versions
+    description: >-
+      Return input JSON array of the same name or the defaults from the
+      versions.yml file
     value: ${{ inputs.ansible-core-version || steps.get.outputs.ansible-core-version }}
   docker-exclude:
-    description: Array of matrix excludes for docker
+    description: >-
+      Return input JSON array of the same name or the defaults from the
+      versions.yml file
     value: ${{ inputs.docker-exclude || steps.get.outputs.docker-exclude }}
   docker-image:
-    description: Array of docker images
+    description: >-
+      Return input JSON array of the same name or the defaults from the
+      versions.yml file
     value: ${{ inputs.docker-image || steps.get.outputs.docker-image }}
   docker-include:
-    description: Array of matrix includes for docker
+    description: >-
+      Return input JSON array of the same name or the defaults from the
+      versions.yml file
     value: ${{ inputs.docker-include || steps.get.outputs.docker-include }}
   python-version:
-    description: Array of python versions (controler)
+    description: >-
+      Return input JSON array of the same name or the defaults from the
+      versions.yml file
     value: ${{ inputs.python-version || steps.get.outputs.python-version }}
   target-python-exclude:
-    description: Array of excludes target python versions
+    description: >-
+      Return input JSON array of the same name or the defaults from the
+      versions.yml file
     value: ${{ inputs.target-python-exclude || steps.get.outputs.target-python-exclude }}
   target-python-version:
-    description: Array of target python versions (managed)
+    description: >-
+      Return input JSON array of the same name or the defaults from the
+      versions.yml file
     value: ${{ inputs.target-python-version || steps.get.outputs.target-python-version }}
 
 runs:
   using: "composite"
   steps:
-    - run: >
-        echo -e "
-        \tansible-test-versions-gh-action \n
-        \tCopyright (C) 2021 Cédric Villemain ( https://Data-Bene.io) \n
-        \tThis program comes with ABSOLUTELY NO WARRANTY. \n
-        \tThis is free software, and you are welcome to redistribute it \n
-        \tunder certain conditions. \n"
+    - name: License
+      run: |
+        echo ::group::License
+
+        echo -e "\tansible-test-versions-gh-action"
+        echo -e "\tCopyright (C) 2021 Cédric Villemain ( https://Data-Bene.io)"
+        echo -e "\tThis program comes with ABSOLUTELY NO WARRANTY."
+        echo -e "\tThis is free software, and you are welcome to redistribute it"
+        echo -e "\tunder certain conditions."
+
+        echo ::endgroup::
       shell: bash
 
-    - run: ${{ github.action_path }}/get_versions.sh ${{ github.action_path }}/versions.yml
+    - name: Set outputs variables
       id: get
+      run: ${{ github.action_path }}/get_versions.sh ${{ github.action_path }}/versions.yml
       shell: bash
 ...
