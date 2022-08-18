@@ -1,0 +1,15 @@
+steps:
+  - name: Get the job matrix parameters for ansible-test as JSON
+    uses: data-bene/ansible-test-versions-gh-action@release/v1
+    id: default-matrix
+    with:
+      docker-image: '[ "ubuntu2004" ]'
+      docker-include: '[]'
+strategy:
+    fail-fast: ${{ inputs.fail-fast }}
+    matrix:
+      ansible-core-version: ${{ fromJSON(define-matrix.outputs.ansible-core-version) }}
+      python-version: ${{ fromJSON(define-matrix.outputs.python-version) }}
+      docker-image: ${{ fromJSON(define-matrix.outputs.docker-image) }}
+      exclude: ${{ fromJSON(define-matrix.outputs.docker-exclude) }}
+      include: ${{ fromJSON(define-matrix.outputs.docker-include) }}
